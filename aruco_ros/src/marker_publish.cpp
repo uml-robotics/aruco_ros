@@ -39,7 +39,7 @@
 #include "aruco_ros/aruco_ros_utils.hpp"
 #include "aruco_msgs/msg/marker_array.hpp"
 
-#include "cv_bridge/cv_bridge.h"
+#include "cv_bridge/cv_bridge.hpp"
 #include "image_transport/image_transport.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/wait_for_message.hpp"

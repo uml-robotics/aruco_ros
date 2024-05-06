@@ -40,7 +40,7 @@
 #include "aruco/cvdrawingutils.h"
 #include "aruco_ros/aruco_ros_utils.hpp"
 
-#include "cv_bridge/cv_bridge.h"
+#include "cv_bridge/cv_bridge.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
 #include "geometry_msgs/msg/vector3_stamped.hpp"
 #include "image_transport/image_transport.hpp"
