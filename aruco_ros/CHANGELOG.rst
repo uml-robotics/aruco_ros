@@ -30,8 +30,8 @@ Changelog for package aruco_ros
 * Replace assert by error message to keep library functional
 * Contributors: Andrea Ponza, Bence Magyar, Christopher Hrabia, Jordi Pages, Jorge Nicho, Ugnius Malūkas, Victor Lopez, Voidminded
 
-Forthcoming
------------
+5.0.5 (2024-05-09)
+------------------
 * Merge pull request #135 from wep21/jazzy-devel
   Update cv_bridge header
 * check header exists
