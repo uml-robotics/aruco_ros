@@ -7,21 +7,21 @@ from launch_ros.actions import Node
 
 def launch_setup(context, *args, **kwargs):
 
-    side = perform_substitutions(context, [LaunchConfiguration('side')])
+    prefix = LaunchConfiguration('prefix').perform(context)
 
     aruco_marker_publisher_params = {
         'image_is_rectified': True,
         'marker_size': LaunchConfiguration('marker_size'),
         'reference_frame': LaunchConfiguration('reference_frame'),
-        'camera_frame': side + '_hand_camera',
+        'camera_frame': LaunchConfiguration('camera_frame'),
     }
 
     aruco_marker_publisher = Node(
         package='aruco_ros',
         executable='marker_publisher',
         parameters=[aruco_marker_publisher_params],
-        remappings=[('/camera_info', '/cameras/' + side + '_hand_camera/camera_info'),
-                    ('/image', '/cameras/' + side + '_hand_camera/image')],
+        remappings=[(prefix + '/camera_info'),
+                    (prefix + '/image')],
     )
 
     return [aruco_marker_publisher]
@@ -34,10 +34,15 @@ def generate_launch_description():
         description='Marker size in m. '
     )
 
-    side_arg = DeclareLaunchArgument(
-        'side', default_value='left',
-        description='Side. ',
-        choices=['left', 'right'],
+    prefix_arg = DeclareLaunchArgument(
+        'prefix', default_value='/',
+        description='Prefix for the robot camera and info topic. ',
+    )
+
+    camera_frame_arg = DeclareLaunchArgument(
+        'camera_frame', default_value='/camera',
+        description='Frmae of the camera. ',
+        
     )
 
     reference_frame = DeclareLaunchArgument(
@@ -50,7 +55,8 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(marker_size_arg)
-    ld.add_action(side_arg)
+    ld.add_action(prefix_arg)
+    ld.add_action(camera_frame_arg)
     ld.add_action(reference_frame)
 
     ld.add_action(OpaqueFunction(function=launch_setup))
