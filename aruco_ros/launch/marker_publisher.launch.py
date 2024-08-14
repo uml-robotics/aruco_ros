@@ -8,6 +8,7 @@ from launch_ros.actions import Node
 def launch_setup(context, *args, **kwargs):
 
     prefix = LaunchConfiguration('prefix').perform(context)
+    image_topic = LaunchConfiguration('image_topic').perform(context)
 
     aruco_marker_publisher_params = {
         'image_is_rectified': True,
@@ -20,8 +21,8 @@ def launch_setup(context, *args, **kwargs):
         package='aruco_ros',
         executable='marker_publisher',
         parameters=[aruco_marker_publisher_params],
-        remappings=[(prefix + '/camera_info'),
-                    (prefix + '/image')],
+        remappings=[('/camera_info', prefix + '/camera_info'),
+                    ('/image', prefix + image_topic)],
     )
 
     return [aruco_marker_publisher]
@@ -34,8 +35,11 @@ def generate_launch_description():
         description='Marker size in m. '
     )
 
+    image_topic_arg = DeclareLaunchArgument(
+        'image_topic', default_value='/image')
+
     prefix_arg = DeclareLaunchArgument(
-        'prefix', default_value='/',
+        'prefix', default_value='',
         description='Prefix for the robot camera and info topic. ',
     )
 
@@ -55,6 +59,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(marker_size_arg)
+    ld.add_action(image_topic_arg)
     ld.add_action(prefix_arg)
     ld.add_action(camera_frame_arg)
     ld.add_action(reference_frame)
